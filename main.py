@@ -73,6 +73,14 @@ def obtener_producto(producto_id: int):
             return producto
     raise HTTPException(status_code=404, detail="Producto no encontrado")
 
+@app.put("/productos/{producto_id}", response_model=Producto, tags=["Productos"])
+def actualizar_producto(producto_id: int, producto_actualizado: Producto):
+    for index, producto in enumerate(productos_db):
+        if producto.id == producto_id:
+            productos_db[index] = producto_actualizado
+            return producto_actualizado
+    raise HTTPException(status_code=404, detail="Producto no encontrado")
+
 @app.delete("/productos/{producto_id}", tags=["Productos"])
 def eliminar_producto(producto_id: int):
     global productos_db
